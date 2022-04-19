@@ -29,14 +29,54 @@ document.addEventListener('DOMContentLoaded', () => {
         squares[appleIndex].classList.remove('apple')
         clearInterval(interval)
         score = 0
-        // randomApple()
+        randomApple()
         direction = 1
         scoreDisplay.innerText = score
         intervalTime = 1000
-        currentSnake =  [2,1,0]
+        currentSnake = [2,1,0]
         currentIndex = 0
         currentSnake.forEach(index => squares[index].classList.add('snake'))
         interval = setInterval(moveOutcomes, intervalTime)
+    }
+
+    // fonction qui traite de tous les résultats possibles du serpent
+    function moveOutcomes() {
+    // gère le serpent qui rentre dans une bordure ou qui se mort la queue
+    if (
+        (currentSnake[0] + width >= (width * width) && direction === width ) || // si le serpent touche mur le bas
+        (currentSnake[0] % width === width -1 && direction === 1) || // si le serpent touche le mur de droite
+        (currentSnake[0] % width === 0 && direction === -1) || // si le serpent touche le mur de gauche
+        (currentSnake[0] - width < 0 && direction === -width) || // si le serpent touche le mur haut
+        squares[currentSnake[0] + direction].classList.contains('snake') // si le serpent se touche
+    ) {
+        return clearInterval(interval) // Efface l'interval si une des situation si dessous se produit
+    }
+
+    const tail = currentSnake.pop() // retire le dernier emplacement de la queue et donne une direction juste à la tête
+    squares[tail].classList.remove('snake') // enlève la class du serpent de la queue
+    currentSnake.unshift(currentSnake[0] + direction) // donne la direction à la tête du serpent
+
+    // gère le serpent qui mange une pomme
+    if (squares[currentSnake[0]].classList.contains('apple')) {
+        squares[currentSnake[0]].classList.remove('apple')
+        squares[tail].classList.add('snake')
+        currentSnake.push(tail)
+        randomApple()
+        score++
+        scoreDisplay.textContent = score
+        clearInterval(interval)
+        intervalTime = intervalTime * speed
+        interval = setInterval(moveOutcomes, intervalTime)
+      }
+      squares[currentSnake[0]].classList.add('snake')
+    }
+
+    //generate new apple once apple is eaten
+    function randomApple() {
+        do {
+        appleIndex = Math.floor(Math.random() * squares.length)
+        } while(squares[appleIndex].classList.contains('snake')) //making sure apples dont appear on the snake
+        squares[appleIndex].classList.add('apple')
     }
     
     // Assigner les touches du clavier pour le dépacement à travers la grille/tableau
@@ -58,4 +98,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // ecouteur d'événements pour chaque fois qu'une touche est enfoncée pour exécuter le contrôle de la fonction
     // maintenant que les keycode sont attribuée aux mouvements du serpent
     document.addEventListener('keyup', control)
+    startBtn.addEventListener('click', startGame)
 })
