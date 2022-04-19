@@ -22,17 +22,25 @@ document.addEventListener('DOMContentLoaded', () => {
     let speed = 0.9
     let intervalTime = 0
     let interval = 0
+
     
     // Assigner les touches du clavier pour le dépacement à travers la grille/tableau
     // création d'une function e pour faire monter dessendre le serpent, aller à gauche ou droite en fonction de la touche sur laquelle on appuis
     function control(e){
         squares [currentIndex].classList.remove('snake') // supprime la class de snake
-        // instruction if indiquant que si nous appuyons sur le bouton flèche droite du clavier le serpent ira à droite
+        // instruction if indiquant que si nous appuyons sur le bouton flèche droite du clavier le serpent ira à droite de 1
         if(e.keyCode === 39) {
             direction = 1
-        } else if (e.keyCode === 38) {
+        } else if (e.keyCode === 38) { // si nous appuyons sur la flèche du haut le serpent reviendra en arrière de 10 divs et semblera monter
             direction = -width // 
+        } else if (e.keycode === 37) { // si nous appuyons sur la gauche le serpent ira dans cette direction d'1 div
+            direction = -1
+        } else if (e.keycode === 40) { // si nous appuyons sur le bouton, la tête du serpent apparaîtra instantanément dans la div à 10 divs de l'endroit où on est actuellement
+            direction = +width
         }
     }
 
+    // ecouteur d'événements pour chaque fois qu'une touche est enfoncée pour exécuter le contrôle de la fonction
+    // maintenant que les keycode sont attribuée aux mouvements du serpent
+    document.addEventListener('keyup', control)
 })
