@@ -23,6 +23,21 @@ document.addEventListener('DOMContentLoaded', () => {
     let intervalTime = 0
     let interval = 0
 
+    // démarrer et redémarrer le jeux
+    function startGame() {
+        currentSnake.forEach(index => squares[index].classList.remove('snake'))
+        squares[appleIndex].classList.remove('apple')
+        clearInterval(interval)
+        score = 0
+        // randomApple()
+        direction = 1
+        scoreDisplay.innerText = score
+        intervalTime = 1000
+        currentSnake =  [2,1,0]
+        currentIndex = 0
+        currentSnake.forEach(index => squares[index].classList.add('snake'))
+        interval = setInterval(moveOutcomes, intervalTime)
+    }
     
     // Assigner les touches du clavier pour le dépacement à travers la grille/tableau
     // création d'une function e pour faire monter dessendre le serpent, aller à gauche ou droite en fonction de la touche sur laquelle on appuis
