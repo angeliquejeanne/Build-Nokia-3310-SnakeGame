@@ -16,9 +16,9 @@ body {
 }
 
 .snake {
-    background-color: magenta;
+    background-color: rgb(140, 0, 255);
 }
 
 .apple {
-    background-color: lime;
+    background-color: rgb(255, 0, 0);
 }
